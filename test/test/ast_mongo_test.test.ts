@@ -196,10 +196,9 @@ describe('ast_mongo', () => {
         debug('check pjsip resources of the remote asterisk - endpoints', endpoints);
         // modify to compare with the snap shot
         endpoints.Output = adjustOutput(endpoints)
-            .replace(/Not in use /g, "Unavailable");
-        endpoints.Output = endpoints.Output
-            .replace(/Contact:  6001\/sip:6001@172(.*)Unknown(.*)\n/gm, "")
-            .replace(/Contact:  6001\/sip:6001@tester:5060                  9d7987fe43 Unknown         nan$/gm,
+            .replace(/(Not.in.use.|Invalid....)/g, "Unavailable")
+            .replace(/Contact:  6001\/sip:6001@172(.*)(Unknown|NonQual)(.*)\n/gm, "")
+            .replace(/Contact:  6001\/sip:6001@tester:5060                  9d7987fe43 (Unknown|NonQual)         nan$/gm,
                       "Contact:  6001/sip:6001@tester:5060                  9d7987fe43 Created       0.000");
         expect(endpoints.Output).toMatchSnapshot();
         // 5
@@ -207,16 +206,22 @@ describe('ast_mongo', () => {
         debug('check pjsip resources of the remote asterisk - endpoint', endpoint);
         // modify to compare with the snap shot
         endpoint.Output = adjustOutput(endpoint)
+            .replace(/(Not.in.use.|Invalid....)/g, "Unavailable")
             .replace(/Contact:  6001\/sip:6001@172(.*)\n/gm, "")
-            .replace(/Contact:  6001\/sip:6001@tester:5060                  9d7987fe43 Unknown         nan$/gm,
-                      "Contact:  6001/sip:6001@tester:5060                  9d7987fe43 Created       0.000");
+            .replace(/Contact:  6001\/sip:6001@tester:5060                  9d7987fe43 (Unknown|NonQual)         nan$/gm,
+                      "Contact:  6001/sip:6001@tester:5060                  9d7987fe43 Created       0.000")
+            .replace(/accept_multiple_sdp_answers        : false\n/g, "")
+            .replace(/follow_early_media_fork            : true\n/g, "")
+            .replace(/mwi_subscribe_replaces_unsolicited : (false|no)\n/g, "")
+            .replace(/suppress_q850_reason_headers       : false\n/g, "");
         expect(endpoint.Output).toMatchSnapshot();
         // 6
         const aors = await ast_utils.exec('pjsip show aors');
         debug('check pjsip resources of the remote asterisk - aors', aors);
         // modify to compare with the snap shot
         aors.Output = adjustOutput(aors)
-            .replace(/^Contact:  6001\/sip:6001@172(.*)\n/gm, "");
+            .replace(/^Contact:  6001\/sip:6001@172(.*)\n/gm, "")
+            .replace(/NonQual/g, "Unknown");
         expect(aors.Output).toMatchSnapshot();
         // 7
         const aor = await ast_utils.exec(`pjsip show aor ${MyID}`);
@@ -225,7 +230,8 @@ describe('ast_mongo', () => {
         aor.Output = adjustOutput(aor)
             .replace(/^=+\n/gm, "")
             .replace(/Contact:  6001\/sip:6001@172(.*)\n/gm, "")
-            .replace(/contact              : sip:6001@172(.*)\n/gm, "");
+            .replace(/contact              : sip:6001@172(.*)\n/gm, "")
+            .replace(/NonQual/g, "Unknown");
         expect(aor.Output).toMatchSnapshot();
         // 8
         const auths = await ast_utils.exec('pjsip show auths');
