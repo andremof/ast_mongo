@@ -1,5 +1,0 @@
-{
-  "mongo_c_driver": "1.8.2",
-  "pjsip": "bundled",
-  "asterisk": "15.1.3"
-}

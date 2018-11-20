@@ -6,7 +6,6 @@ The **`ast_mongo`** project provides the following plugins for Asterisk;
 1. Queue logging for MongoDB (preliminarly),
 1. CDR backend for MongoDB,
 1. CEL backend for MongoDB (contributed by [viktike][9], thanks [viktike][9]),
-1. ~~and a [test bench](test_bench) with MongoDB replica set based on Docker technology~~(Deprecated).
 1. and a [test bench](test/docker) based on Docker technology.
 
 Plugin name            |Realtime    |CDR|CEL|Source code|Config file(s)
@@ -24,14 +23,6 @@ See [src](src) and [patches](patches) in detail.
 
 ## Test
 See [Test](test/docker).
-
-## ~~Test bench~~
-**(Deprecated, use [Test](test/docker) instead of it)**
-
-The test bench based on Docker technology for these plugins is also provided.
-You can examine how it works on your desktop simply.
-See [test bench](test_bench) in detail.
-
 
 ## Setting up
 
