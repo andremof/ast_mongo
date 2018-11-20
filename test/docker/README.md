@@ -5,6 +5,7 @@
 ```yml
   services:
     asterisk:
+      image: ast_mongo-asterisk:15.4.0
       build:
         args:
           VERSION_ASTERISK: 15.4.0
@@ -20,7 +21,15 @@
     - `docker exec -it tester ash`
     - `cd ast_mongo`
     - `npm install`
-    - `npm test`
+    - `npm test`, then you'll get following results for example;
+    ```
+    ...
+    Test Suites: 2 passed, 2 total
+    Tests:       12 passed, 12 total
+    Snapshots:   18 passed, 18 total
+    Time:        44.412s
+    Ran all test suites.
+    ```
 - clean up outstanding docker resources;
     - `docker-compose down`
 
